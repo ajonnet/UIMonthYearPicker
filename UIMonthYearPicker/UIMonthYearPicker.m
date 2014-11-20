@@ -107,7 +107,7 @@ const NSInteger numberOfComponents = 2;
     
     [self selectRow: dateMonth - 1
         inComponent: MONTH
-           animated: NO];
+           animated: YES];
     
     int rowIndex = dateYear - minYear;
     if (rowIndex < 0) {
@@ -186,9 +186,24 @@ const NSInteger numberOfComponents = 2;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+
+    NSDate *dateSelected = self.date;
+    
+    //Minimum Date Check
+    if (minimumDate && [[dateSelected earlierDate:minimumDate] isEqualToDate:dateSelected]) {
+        dateSelected = minimumDate;
+        [self setDate:dateSelected animated:YES];
+    }
+    
+    //Maximum Date Check
+    if (maximumDate && [[dateSelected laterDate:maximumDate] isEqualToDate:dateSelected]) {
+        dateSelected = maximumDate;
+        [self setDate:dateSelected animated:YES];
+    }
+    
     if (self._delegate) {
         if ([self._delegate respondsToSelector:@selector(pickerView:didChangeDate:)]) {
-            [self._delegate pickerView:self didChangeDate:self.date];
+            [self._delegate pickerView:self didChangeDate:dateSelected];
         }
     }
 }

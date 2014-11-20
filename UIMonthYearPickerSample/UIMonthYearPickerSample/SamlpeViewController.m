@@ -22,6 +22,8 @@
     [super viewDidLoad];
 
     datePicker._delegate = self;
+    datePicker.maximumDate = [[NSDate date] dateByAddingTimeInterval:40*24*60*60];
+    datePicker.minimumDate = [[NSDate date] dateByAddingTimeInterval:-200*24*60*60];
     
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale:[NSLocale currentLocale]];
